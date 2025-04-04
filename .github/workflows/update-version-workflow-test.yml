@@ -1,0 +1,23 @@
+name: "Refresh from Upstream"
+on:
+  workflow_dispatch:
+
+jobs:
+    update-version-test:
+        runs-on: ubuntu-latest
+        name: "Update version test workflow"
+        steps:
+            - name: "Checkout code"
+              uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
+            - name: "Fetch Corretto-8 upstream"
+              uses: ./.github/actions/fetch-repo
+              with:
+                upstream: 'https://github.com/openjdk/jdk8u.git'
+                local-branch: 'upstream'
+            - name: "Update Corretto version"
+              uses: ./.github/actions/update-version
+              with:
+                upstream: 'upstream'
+                version-branch: 'develop'
